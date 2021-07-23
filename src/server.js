@@ -1,51 +1,43 @@
 const express = require('express');
 const morgan = require("morgan");
-const { createProxyMiddleware } = require('http-proxy-middleware');
 const bodyParser = require('body-parser')
-const path = require('path');
+const request = require('request');
+const cors = require("cors");
+const path = __dirname + '/app/views/';
+
 const app = express();
 
 // Configuration
-const PORT = 8080;
+const PORT = 5000;
 const HOST = "localhost";
-const API_SERVICE_URL = "https://jsonplaceholder.typicode.com";
+const API_SERVICE_URL = "https://api.duckduckgo.com/";
+const corsOptions = {
+    origin: "http://localhost:3000"
+};
 
 // Logging
 app.use(morgan('dev'));
-
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path));
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 ////////  start routes  /////////
-// Info GET endpoint
-app.get('/info', (req, res, next) => {
-    res.send('This is a proxy service which proxies to Billing and Account APIs.');
-});
-app.get('/ping', function (req, res) {
-    return res.send('pong');
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get('/api/', function (req, res) {
+    res.json({data: 'api is up', err: null});
+});
+
+app.get('/api/search', function(req,res) {
+    const {q} = req.query;
+    const newUrl = (`${API_SERVICE_URL}?q=${q}&format=json`);
+    const data = request(newUrl).pipe(res);
+    return data;
 });
 ////////  end routes  /////////
-
-// Authorization
-app.use('', (req, res, next) => {
-    if (req.headers.authorization) {
-        next();
-    } else {
-        res.sendStatus(403);
-    }
-});
-
-// Proxy endpoints
-app.use('/json_placeholder', createProxyMiddleware({
-    target: API_SERVICE_URL,
-    changeOrigin: true,
-    pathRewrite: {
-        [`^/json_placeholder`]: '',
-    },
-}));
 
 // Start the Proxy
 app.listen(PORT, HOST, () => {
