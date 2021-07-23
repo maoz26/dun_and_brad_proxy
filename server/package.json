@@ -1,0 +1,21 @@
+{
+  "name": "dun_and_brad_proxy",
+  "version": "1.0.0",
+  "private": true,
+  "main": "server.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-http-proxy": "^1.6.2",
+    "http-proxy-middleware": "^1.0.5",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.12"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "request": "^2.88.2"
+  }
+}

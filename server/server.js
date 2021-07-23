@@ -12,7 +12,7 @@ const PORT = 5000;
 const HOST = "localhost";
 const API_SERVICE_URL = "https://api.duckduckgo.com/";
 const corsOptions = {
-    origin: "http://localhost:3000"
+    origin: "http://localhost:5000"
 };
 
 // Logging
