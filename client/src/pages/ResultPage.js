@@ -30,10 +30,25 @@ const ResultPage = () => {
     }
 
     const onSearchBlur = async(e) => {
-        const newPastQueries = new Set([...pastQueries, searchField]);
-        setPastQueries([...newPastQueries])
-        setData(await getRelatedTopic(searchField));
-        setSearchField('');
+        if(searchField) {
+            const newPastQueries = new Set([...pastQueries, searchField]);
+            setPastQueries([...newPastQueries])
+            setData(await getRelatedTopic(searchField));
+            setSearchField('');
+            const titles = document.querySelectorAll('.title');
+            const titlesArr = [...titles];
+            for (let el of titlesArr) {
+                highlightText(el, searchField, true, false);
+            }
+        }
+    }
+
+    const highlightText = (element, phrase, allOccurrences, caseSensitive) =>{
+        const modifiers = (allOccurrences ? 'g' : '') + (caseSensitive ? '' : 'i');
+        const text = element.innerHTML;
+        element.innerHTML = text.replace(new RegExp(phrase, modifiers), function(match){
+            return '<span class="highlight" style="background-color: yellow;">' + match + '</span>';
+        });
     }
 
     const onPastQueryClicked = async (e, text) => {

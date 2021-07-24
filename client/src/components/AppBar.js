@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import Drawer from "@material-ui/core/Drawer";
 import {
+    Button,
     Divider,
     List,
     ListItem,
@@ -35,6 +36,20 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: alpha(theme.palette.common.white, 0.15),
         '&:hover': {
             backgroundColor: alpha(theme.palette.common.white, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    },
+    searchBtn: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: alpha(theme.palette.common.white, 0.75),
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.common.white, 0.85),
         },
         marginLeft: 0,
         width: '100%',
@@ -131,6 +146,13 @@ const SearchAppBar = (props) => {
                         onInput={onSearchField}
                         onBlur={onSearchBlur}
                     />
+                </div>
+                <div className={classes.searchBtn}>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={onSearchBlur}
+                    >{'find!'}</Button>
                 </div>
             </Toolbar>
         </AppBar>

@@ -12,7 +12,6 @@ const useStyles = makeStyles({
     table: {
         minWidth: 650,
     },
-
 });
 
 const ResultTable = (props) => {
@@ -37,7 +36,10 @@ const ResultTable = (props) => {
                             <TableCell className={'url'}>
                                 <a href={row.FirstURL}>{row.FirstURL}</a>
                             </TableCell>
-                            <TableCell className={'title'} align={'right'} >{row.Text}</TableCell>
+                            <TableCell
+                                className={'title'}
+                                align={'right'}
+                            >{row.Text}</TableCell>
                         </TableRow>
                     } else if (row.Topics) {
                         return row.Topics.map((topic, index) => {
