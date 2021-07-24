@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,6 +7,13 @@ import InputBase from '@material-ui/core/InputBase';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import Drawer from "@material-ui/core/Drawer";
+import {
+    Divider,
+    List,
+    ListItem,
+    ListItemText
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,52 +68,96 @@ const useStyles = makeStyles((theme) => ({
             },
         },
     },
+    list: {
+        width: 250,
+    },
+    fullList: {
+        width: 'auto',
+    },
 }));
 
 const SearchAppBar = (props) => {
     const classes = useStyles();
 
+    const [drawerState, setDrawerState] = useState(false);
+    const [queryList, setQueryList] = useState([]);
+
+    useEffect(() => {
+        setQueryList(pastQueries);
+    }, ['pastQueries'])
+
     const {
         searchField,
         onSearchField,
         onSearchBlur,
+        pastQueries,
     } = props;
 
-    return (
-        <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        Material-UI
-                    </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                            value={searchField}
-                            onInput={onSearchField}
-                            onBlur={onSearchBlur}
-                        />
+    const toggleDrawer = (event, isOpen) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
+        setDrawerState(isOpen);
+    };
+
+    const onMenuClicked = (e) => {
+        toggleDrawer(e,true);
+    }
+
+    const onPastQueryClicked = (e) => {
+        const val = e.target.value;
+        console.log(val);
+    }
+
+    return <div className={classes.root}>
+        <AppBar position="static">
+            <Toolbar>
+                <IconButton
+                    edge="start"
+                    className={classes.menuButton}
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={onMenuClicked}
+                >
+                    <MenuIcon/>
+                </IconButton>
+                <Typography className={classes.title} variant="h6" noWrap>Dun & Bradstreet Proxy</Typography>
+                <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                        <SearchIcon />
                     </div>
-                </Toolbar>
-            </AppBar>
-        </div>
-    );
+                    <InputBase
+                        placeholder="Search…"
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.inputInput,
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                        value={searchField}
+                        onInput={onSearchField}
+                        onBlur={onSearchBlur}
+                    />
+                </div>
+            </Toolbar>
+        </AppBar>
+        <Drawer
+            open={drawerState}
+            onClose={(e) => toggleDrawer(e, false)}
+        >
+            <div role="presentation">
+                <h3>Last queries</h3>
+                <Divider/>
+                <List>
+                    {pastQueries.map((text, index) => (
+                        <ListItem button key={text} onClick={onPastQueryClicked}>
+                            <ListItemText primary={text} />
+                        </ListItem>
+                    ))}
+                </List>
+            </div>
+        </Drawer>
+    </div>;
 }
 
 export default SearchAppBar;

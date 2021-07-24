@@ -6,6 +6,7 @@ import PrimarySearchAppBar from "../components/AppBar";
 const ResultPage = () => {
     const [data,setData] = useState(null);
     const [searchField, setSearchField] = useState('');
+    const [pastQueries, setPastQueries] = useState([]);
 
     useEffect(() => {
         init();
@@ -17,6 +18,7 @@ const ResultPage = () => {
     }
 
     const getRelatedTopic = async(keyword) => {
+        if (!keyword) return;
         const fetchResult = await fetch(`/api/search?q=${keyword}`, );
         const res = await fetchResult.json();
         return res.data;
@@ -24,11 +26,15 @@ const ResultPage = () => {
 
     const onSearchField = (e) => {
         const val = e.target.value;
-        console.log(val);
         setSearchField(val);
     }
 
     const onSearchBlur = async(e) => {
+        const newPastQueries = [
+            ...pastQueries,
+            searchField
+        ];
+        setPastQueries(newPastQueries)
         setData(await getRelatedTopic(searchField));
     }
 
@@ -37,6 +43,7 @@ const ResultPage = () => {
             searchField={searchField}
             onSearchField={onSearchField}
             onSearchBlur={onSearchBlur}
+            pastQueries={pastQueries}
         />
         <div className="main-content">
             {data && <>
