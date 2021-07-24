@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import ResultTable from "../components/ResultTable";
 import PrimarySearchAppBar from "../components/AppBar";
+import {Button} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 const ResultPage = () => {
     const [data,setData] = useState(null);
@@ -35,11 +37,15 @@ const ResultPage = () => {
             setPastQueries([...newPastQueries])
             setData(await getRelatedTopic(searchField));
             setSearchField('');
-            const titles = document.querySelectorAll('.title');
-            const titlesArr = [...titles];
-            for (let el of titlesArr) {
-                highlightText(el, searchField, true, false);
-            }
+            triggerHighlight();
+        }
+    }
+
+    const triggerHighlight = () => {
+        const titles = document.querySelectorAll('.title');
+        const titlesArr = [...titles];
+        for (let el of titlesArr) {
+            highlightText(el, searchField, true, false);
         }
     }
 
@@ -53,7 +59,6 @@ const ResultPage = () => {
 
     const onPastQueryClicked = async (e, text) => {
         setSearchField(text);
-        console.log('text',text)
         setData(await getRelatedTopic(text));
     }
 
@@ -70,10 +75,22 @@ const ResultPage = () => {
                 <ResultTable tableData={data}/>
             </>}
         </div>
+        <Link to="/bye">
+            <div className="navigation-section">
+                <Button
+                    className={'navigation-btn'}
+                    variant="outlined"
+                    color="primary"
+                >{'support paging'}</Button>
+            </div>
+        </Link>
+
     </ResultPageWrapper>;
 }
 
 const ResultPageWrapper = styled.div`
+  width: 100%;
+  
   .title {
     color: #bba0a0;
     text-align: center;
@@ -81,8 +98,18 @@ const ResultPageWrapper = styled.div`
 
   .main-content {
     width: 80%;
-    margin: 0 auto;
+    margin: 20px auto;
   }
+  
+  .navigation-section {
+    width: 80%;
+    margin: 20px auto;
+    
+    .navigation-btn {
+      margin-top: 20px;
+    }
+  }
+  
 `;
 
 export default ResultPage;

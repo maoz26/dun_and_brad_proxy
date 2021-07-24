@@ -44,6 +44,7 @@
   "devDependencies": {
     "@material-ui/icons": "^4.11.2",
     "cors": "^2.8.5",
+    "react-router-dom": "^5.2.0",
     "request": "^2.88.2"
   }
 }

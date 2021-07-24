@@ -25,8 +25,8 @@ const ResultTable = (props) => {
         <Table className={classes.table} aria-label="simple table">
             <TableHead>
                 <TableRow>
-                    <TableCell align="left">Url</TableCell>
-                    <TableCell align="center">Title</TableCell>
+                    <TableCell align="left" style={{fontSize: 20}}>Url</TableCell>
+                    <TableCell align="center" style={{fontSize: 20}}>Title</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
