@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -77,27 +77,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SearchAppBar = (props) => {
-    const classes = useStyles();
-
-    const [drawerState, setDrawerState] = useState(false);
-    const [queryList, setQueryList] = useState([]);
-
-    useEffect(() => {
-        setQueryList(pastQueries);
-    }, ['pastQueries'])
-
     const {
         searchField,
         onSearchField,
         onSearchBlur,
         pastQueries,
+        onPastQueryClicked
     } = props;
 
-    const toggleDrawer = (event, isOpen) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
+    const [drawerState, setDrawerState] = useState(false);
 
+    const classes = useStyles();
+
+    const toggleDrawer = (event, isOpen) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) return;
         setDrawerState(isOpen);
     };
 
@@ -105,9 +98,9 @@ const SearchAppBar = (props) => {
         toggleDrawer(e,true);
     }
 
-    const onPastQueryClicked = (e) => {
-        const val = e.target.value;
-        console.log(val);
+    const onPastQueryTriggered = (e, text) => {
+        onPastQueryClicked(e, text);
+        toggleDrawer(e, false);
     }
 
     return <div className={classes.root}>
@@ -150,7 +143,7 @@ const SearchAppBar = (props) => {
                 <Divider/>
                 <List>
                     {pastQueries.map((text, index) => (
-                        <ListItem button key={text} onClick={onPastQueryClicked}>
+                        <ListItem button key={text} onClick={(e) => onPastQueryTriggered(e, text)}>
                             <ListItemText primary={text} />
                         </ListItem>
                     ))}

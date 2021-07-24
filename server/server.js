@@ -7,7 +7,7 @@ const path = __dirname + '/app/views/';
 const app = express();
 
 // Configuration
-const PORT = 5000;
+const PORT = 5002;
 const HOST = "localhost";
 const API_SERVICE_URL = "https://api.duckduckgo.com/";
 

@@ -30,12 +30,16 @@ const ResultPage = () => {
     }
 
     const onSearchBlur = async(e) => {
-        const newPastQueries = [
-            ...pastQueries,
-            searchField
-        ];
-        setPastQueries(newPastQueries)
+        const newPastQueries = new Set([...pastQueries, searchField]);
+        setPastQueries([...newPastQueries])
         setData(await getRelatedTopic(searchField));
+        setSearchField('');
+    }
+
+    const onPastQueryClicked = async (e, text) => {
+        setSearchField(text);
+        console.log('text',text)
+        setData(await getRelatedTopic(text));
     }
 
     return <ResultPageWrapper>
@@ -44,6 +48,7 @@ const ResultPage = () => {
             onSearchField={onSearchField}
             onSearchBlur={onSearchBlur}
             pastQueries={pastQueries}
+            onPastQueryClicked={onPastQueryClicked}
         />
         <div className="main-content">
             {data && <>
