@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import ResultTable from "../components/ResultTable";
 import styled from "styled-components";
+import ResultTable from "../components/ResultTable";
+import PrimarySearchAppBar from "../components/AppBar";
 
-const PageBodyHello = () => {
+const ResultPage = () => {
     const [data,setData] = useState(null);
+    const [searchField, setSearchField] = useState('');
 
     useEffect(() => {
         init();
@@ -20,17 +22,31 @@ const PageBodyHello = () => {
         return res.data;
     }
 
-    return <ResultPage>
-        <h1 className="title">{'hello!'}</h1>
+    const onSearchField = (e) => {
+        const val = e.target.value;
+        console.log(val);
+        setSearchField(val);
+    }
+
+    const onSearchBlur = async(e) => {
+        setData(await getRelatedTopic(searchField));
+    }
+
+    return <ResultPageWrapper>
+        <PrimarySearchAppBar
+            searchField={searchField}
+            onSearchField={onSearchField}
+            onSearchBlur={onSearchBlur}
+        />
         <div className="main-content">
             {data && <>
                 <ResultTable tableData={data}/>
             </>}
         </div>
-    </ResultPage>;
+    </ResultPageWrapper>;
 }
 
-const ResultPage = styled.div`
+const ResultPageWrapper = styled.div`
   .title {
     color: #bba0a0;
     text-align: center;
@@ -42,4 +58,4 @@ const ResultPage = styled.div`
   }
 `;
 
-export default PageBodyHello;
+export default ResultPage;

@@ -1,5 +1,5 @@
 import './App.css';
-import PageBodyHello from "./pages/PageBodyHello";
+import PageBodyHello from "./pages/ResultPage";
 import PageBodyBye from "./pages/PageBodyBye";
 
 const App = () => {

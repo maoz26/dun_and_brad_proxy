@@ -12,6 +12,7 @@ const useStyles = makeStyles({
     table: {
         minWidth: 650,
     },
+
 });
 
 const ResultTable = (props) => {
@@ -25,23 +26,27 @@ const ResultTable = (props) => {
         <Table className={classes.table} aria-label="simple table">
             <TableHead>
                 <TableRow>
-                    <TableCell>Title</TableCell>
-                    <TableCell align="right">Url</TableCell>
+                    <TableCell align="left">Url</TableCell>
+                    <TableCell align="center">Title</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
-                {tableData.map((row) => {
+                {tableData.map((row, index) => {
                     if (row.FirstURL) {
-                        return <TableRow key={row.Text}>
-                            <TableCell component="th" scope="row">{row.Text}</TableCell>
-                            <TableCell align="right">{row.FirstURL}</TableCell>
+                        return <TableRow key={row.FirstURL + index}>
+                            <TableCell className={'url'}>
+                                <a href={row.FirstURL}>{row.FirstURL}</a>
+                            </TableCell>
+                            <TableCell className={'title'} align={'right'} >{row.Text}</TableCell>
                         </TableRow>
                     } else if (row.Topics) {
-                        return row.Topics.map((topic) => {
+                        return row.Topics.map((topic, index) => {
                             if (topic.FirstURL) {
-                                return <TableRow key={row.Text}>
-                                    <TableCell scope="row">{topic.Text}</TableCell>
-                                    <TableCell align="right">{topic.FirstURL}</TableCell>
+                                return <TableRow key={topic.FirstURL + index}>
+                                    <TableCell className={'url'}>
+                                        <a href={topic.FirstURL}>{topic.FirstURL}</a>
+                                    </TableCell>
+                                    <TableCell className={'title'} align="right" >{topic.Text}</TableCell>
                                 </TableRow>;
                             }
                         })}
