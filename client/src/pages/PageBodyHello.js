@@ -15,10 +15,9 @@ const PageBodyHello = () => {
     }
 
     const getRelatedTopic = async(keyword) => {
-        const response = await fetch(`/api/search?q=${keyword}`, );
-        const data = await response.json();
-        const { RelatedTopics } = data;
-        return RelatedTopics;
+        const fetchResult = await fetch(`/api/search?q=${keyword}`, );
+        const res = await fetchResult.json();
+        return res.data;
     }
 
     return <ResultPage>
